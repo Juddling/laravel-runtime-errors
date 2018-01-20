@@ -1,0 +1,28 @@
+{
+    "name": "juddling/laravel-route-checker",
+    "description": "Checks your route calls to see if they map to a registered named route",
+    "type": "library",
+    "authors": [
+        {
+            "name": "James Judd",
+            "email": "james.judd@netsells.co.uk"
+        }
+    ],
+    "require": {
+        "illuminate/support": "^5.0",
+        "illuminate/console": "^5.0",
+        "nikic/php-parser": "^3.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Juddling\\RouteChecker\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Juddling\\RouteChecker\\RouteChckerServiceProvider"
+            ]
+        }
+    }
+}
