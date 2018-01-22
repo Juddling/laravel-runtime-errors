@@ -9,7 +9,7 @@ class RouteCheckerServiceProvider extends ServiceProvider
     public function register()
     {
         $this->commands([
-            FindInvalidRouteCalls::class
+            FindInvalidRouteCallsCommand::class
         ]);
     }
 }

@@ -21,3 +21,9 @@ Add the service provider to `config/app.php`:
 ```
 php artisan juddling:find-invalid-routes
 ```
+
+## Contributing
+Install from source:
+```
+composer update juddling/laravel-route-checker --prefer-source
+```

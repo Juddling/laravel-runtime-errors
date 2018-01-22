@@ -2,46 +2,25 @@
 
 namespace Juddling\RouteChecker;
 
-use Illuminate\Console\Command;
-use Illuminate\Routing\Route;
 use Illuminate\Support\Collection;
+use Illuminate\Routing\Route;
 use PhpParser\Node;
 use PhpParser\NodeTraverser;
 use PhpParser\ParserFactory;
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
-use RegexIterator;
+use Symfony\Component\Console\Output\OutputInterface;
 
-class FindInvalidRouteCalls extends Command
+class FindInvalidRouteCalls
 {
-    protected $signature = 'juddling:find-invalid-routes';
-    protected $description = 'Checks your route calls to see if they map to a registered named route';
     protected $parser;
     /** @var Collection */
     protected $routeNames;
-    protected $table;
+    /** @var Collection */
     protected $routeCalls;
 
     public function __construct()
     {
         $this->parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
         $this->routeCalls = new Collection;
-
-        parent::__construct();
-    }
-
-    private function getAllFilesInDir($directory, $fileExtension)
-    {
-        $directory = realpath($directory);
-        $it = new RecursiveDirectoryIterator($directory);
-        $it = new RecursiveIteratorIterator($it, RecursiveIteratorIterator::LEAVES_ONLY);
-        $it = new RegexIterator($it, '(\.' . preg_quote($fileExtension) . '$)');
-
-        foreach ($it as $file) {
-            /** @var \SplFileObject $file */
-            $filepath = $file->getRealPath();
-            yield $filepath;
-        }
     }
 
     protected function routeExists($routeName): bool
@@ -59,31 +38,12 @@ class FindInvalidRouteCalls extends Command
         return $this->routeExists($routeName);
     }
 
-    public function handle()
+    public function findRouteFunctionCalls($file)
     {
-        foreach ($this->getAllFilesInDir(getcwd(), 'php') as $file) {
-            if (!$this->blacklisted($file)) {
-                $this->parseFile($file);
-            }
-        }
+        $code = file_get_contents($file);
 
-        $this->renderTable();
-    }
-
-    protected function blacklisted($file)
-    {
-        return strpos($file, 'vendor/');
-    }
-
-    protected function parseFile($file)
-    {
-        $this->findRouteFunctionCalls(file_get_contents($file));
-    }
-
-    protected function findRouteFunctionCalls($code)
-    {
         $traverser = new NodeTraverser;
-        $visitor = new FindingVisitor(function (Node $node) {
+        $visitor = new FindingVisitor(function (Node $node) use ($file) {
             if ($node instanceof Node\Expr\FuncCall) {
                 if ($node->name instanceof Node\Name && $node->name->toString() === 'route') {
                     $firstArgument = $node->args[0];
@@ -95,7 +55,8 @@ class FindInvalidRouteCalls extends Command
 
                         $this->routeCalls->push([
                             'name' => $routeName,
-                            'valid' => $this->routeExists($routeName)
+                            'valid' => $this->routeExists($routeName),
+                            'file' => $file
                         ]);
 
                         return true;
@@ -110,15 +71,15 @@ class FindInvalidRouteCalls extends Command
         return $visitor->getFoundNodes();
     }
 
-    private function renderTable()
+    public function renderTable(OutputInterface $output)
     {
-        $this->table = new \Symfony\Component\Console\Helper\Table($this->getOutput());
-        $this->table->setHeaders(['Route Name', 'Valid']);
-        $this->table->addRows($this->routeCalls->sortBy('valid')->map(function ($call) {
+        $table = new \Symfony\Component\Console\Helper\Table($output);
+        $table->setHeaders(['Route Name', 'Valid', 'File']);
+        $table->addRows($this->routeCalls->sortBy('valid')->map(function ($call) {
             $call['valid'] = $call['valid'] ? '✅' : '❌';
             return $call;
         })->toArray());
-        $this->table->setStyle('borderless');
-        $this->table->render();
+        $table->setStyle('borderless');
+        $table->render();
     }
 }
