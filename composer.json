@@ -21,7 +21,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Juddling\\RouteChecker\\RouteChckerServiceProvider"
+                "Juddling\\RouteChecker\\RouteCheckerServiceProvider"
             ]
         }
     }
