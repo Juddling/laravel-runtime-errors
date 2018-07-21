@@ -2,33 +2,32 @@
 
 namespace Juddling\RouteChecker;
 
-use Illuminate\Support\Collection;
 use Illuminate\Routing\Route;
+use Illuminate\Support\Collection;
 
 class FindInvalidRouteCalls extends FindInvalid
 {
-    /** @var Collection */
-    protected $routeNames;
-    protected $nameOfArgument = 'Route Names';
+	/** @var Collection */
+	protected $routeNames;
+	protected $nameOfArgument = 'Route Names';
 
+	public function __construct()
+	{
+		$this->routeNames = collect(\Route::getRoutes())
+			->map(function (Route $route) {
+				return $route->getName();
+			})->filter();
 
-    protected function getFunctionName()
-    {
-        return 'route';
-    }
+		parent::__construct();
+	}
 
-    protected function check(string $routeName): bool
-    {
-        if ($this->routeNames) {
-            return $this->routeNames->contains($routeName);
-        }
+	protected function getFunctionName()
+	{
+		return 'route';
+	}
 
-        // set the routes
-        $this->routeNames = collect(\Route::getRoutes())->map(function (Route $route) {
-            return $route->getName();
-        })->filter();
-
-        // now try this function again
-        return $this->check($routeName);
-    }
+	protected function check(string $routeName): bool
+	{
+		return $this->routeNames->contains($routeName);
+	}
 }

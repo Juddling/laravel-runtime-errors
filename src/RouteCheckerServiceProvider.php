@@ -10,6 +10,7 @@ class RouteCheckerServiceProvider extends ServiceProvider
     {
         $this->commands([
             FindInvalidRouteCallsCommand::class,
+            FindInvalidViewCallsCommand::class,
             FindInvalidRouteDefinitionsCommand::class,
         ]);
     }
