@@ -6,6 +6,8 @@ use PhpParser\Node;
 use PhpParser\NodeVisitorAbstract;
 
 /**
+ * NOTE this class has been copied in from version 4.0 of PHP-Parser
+ *
  * This visitor can be used to find and collect all nodes satisfying some criterion determined by
  * a filter callback.
  */
