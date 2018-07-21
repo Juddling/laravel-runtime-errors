@@ -5,39 +5,56 @@ namespace Juddling\RouteChecker;
 use PhpParser\Node;
 use PhpParser\NodeTraverser;
 
-class FindInvalidRouteDefinitions extends FindInvalidRouteCalls
+class FindInvalidRouteDefinitions extends FindInvalid
 {
-    public function findRouteFunctionCalls($file)
+    protected $nameOfArgument = 'Route Controller Action';
+
+    public function findFunctionCalls($file)
     {
-        dump($this->parser->parse(file_get_contents($file)));
-
         $traverser = new NodeTraverser;
-        $visitor = new FindingVisitor(function (Node $node) use ($file) {
+        $visitor = new FindingVisitor($this->nodeVisitor($file));
+        $traverser->addVisitor($visitor);
+        $traverser->traverse($this->parser->parse(file_get_contents($file)));
+        return $visitor->getFoundNodes();
+    }
+
+    protected function nodeVisitor($file): callable
+    {
+        return function (Node $node) use ($file) {
             if ($node instanceof Node\Expr\StaticCall) {
-                if ($node->name instanceof Node\Name && $node->name->toString() === 'route') {
-                    $firstArgument = $node->args[0];
+                foreach ($node->args as $argument) {
+                    $routeConfiguration = $argument->value;
+                    if ($routeConfiguration instanceof Node\Expr\Array_) {
+                        foreach ($routeConfiguration->items as $routeConfigurationItem) {
+                            if ($routeConfigurationItem->key instanceof Node\Scalar\String_ && $routeConfigurationItem->key->value === 'uses') {
+                                $action = $routeConfigurationItem->value->value;
 
-                    if ($firstArgument->value instanceof Node\Scalar\String_) {
-                        // value of first argument is route name
-                        $stringScalar = $firstArgument->value;
-                        $routeName = $stringScalar->value;
+                                $this->results->push([
+                                    'name' => $action,
+                                    'valid' => $this->check($action),
+                                    'file' => $file,
+                                ]);
 
-                        $this->routeCalls->push([
-                            'name' => $routeName,
-                            'valid' => $this->routeExists($routeName),
-                            'file' => $file
-                        ]);
-
-                        return true;
+                                return true;
+                            }
+                        }
                     }
                 }
             }
 
             return false;
-        });
-        $traverser->addVisitor($visitor);
-        $traverser->traverse($this->parser->parse(file_get_contents($file)));
+        };
+    }
 
-        return $visitor->getFoundNodes();
+    protected function check(string $argument)
+    {
+        [$className, $methodName] = explode('@', $argument);
+        $fullyQualifiedName = "App\Http\Controllers\\$className";
+        return in_array($methodName, get_class_methods($fullyQualifiedName));
+    }
+
+    protected function getFunctionName()
+    {
+        throw new \RuntimeException;
     }
 }

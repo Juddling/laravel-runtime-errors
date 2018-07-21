@@ -21,8 +21,10 @@ class FindInvalidRouteDefinitionsCommand extends FindInvalidRouteCallsCommand
     public function handle()
     {
         foreach ($this->routeFiles() as $file) {
-            $this->routeDefinitions->findRouteFunctionCalls($file);
+            $this->routeDefinitions->findFunctionCalls($file);
         }
+
+        $this->routeDefinitions->renderTable($this->getOutput());
     }
 
     /**
