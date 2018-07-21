@@ -3,19 +3,23 @@
 namespace Juddling\RouteChecker;
 
 use Illuminate\Support\Collection;
-use Illuminate\Routing\Route;
 use Illuminate\View\FileViewFinder;
 use InvalidArgumentException;
-use PhpParser\Node;
-use PhpParser\NodeTraverser;
-use PhpParser\ParserFactory;
-use Symfony\Component\Console\Output\OutputInterface;
 
 class FindInvalidViewCalls extends FindInvalid
 {
 	/** @var Collection */
 	protected $viewPaths;
+	/** @var string $nameOfArgument */
 	protected $nameOfArgument = 'View Path';
+	/** @var FileViewFinder $views */
+	protected $viewFinder;
+
+	public function __construct()
+	{
+		$this->viewFinder = app('view.finder');
+		parent::__construct();
+	}
 
 	protected function getFunctionName()
 	{
@@ -24,11 +28,8 @@ class FindInvalidViewCalls extends FindInvalid
 
 	protected function check(string $viewPath): bool
 	{
-		/** @var FileViewFinder $views */
-		$views = app('view.finder');
-
 		try {
-			$views->find($viewPath);
+			$this->viewFinder->find($viewPath);
 		} catch (InvalidArgumentException $e) {
 			return false;
 		}
