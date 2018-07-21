@@ -38,7 +38,7 @@ class FindInvalidRouteCallsCommand extends Command
     {
         foreach ($this->getAllFilesInDir(getcwd(), 'php') as $file) {
             if (!$this->blacklisted($file)) {
-                $this->routeCalls->findRouteFunctionCalls($file);
+                $this->routeCalls->findFunctionCalls($file);
             }
         }
 
