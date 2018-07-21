@@ -15,6 +15,14 @@ class FindInvalidRouteCalls extends FindInvalid
 	protected $routeNames;
 	protected $nameOfArgument = 'Route Names';
 
+	public function __construct()
+	{
+		$this->routeNames = collect(\Route::getRoutes())->map(function (Route $route) {
+			return $route->getName();
+		})->filter();
+
+		parent::__construct();
+	}
 
 	protected function getFunctionName()
 	{
@@ -23,16 +31,6 @@ class FindInvalidRouteCalls extends FindInvalid
 
 	protected function check(string $routeName): bool
 	{
-		if ($this->routeNames) {
-			return $this->routeNames->contains($routeName);
-		}
-
-		// set the routes
-		$this->routeNames = collect(\Route::getRoutes())->map(function (Route $route) {
-			return $route->getName();
-		})->filter();
-
-		// now try this function again
-		return $this->check($routeName);
+		return $this->routeNames->contains($routeName);
 	}
 }
