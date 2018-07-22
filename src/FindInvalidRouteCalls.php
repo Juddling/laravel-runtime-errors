@@ -7,27 +7,27 @@ use Illuminate\Support\Collection;
 
 class FindInvalidRouteCalls extends FindInvalid
 {
-	/** @var Collection */
-	protected $routeNames;
-	protected $nameOfArgument = 'Route Names';
+    /** @var Collection */
+    protected $routeNames;
+    protected $nameOfArgument = 'Route Names';
 
-	public function __construct()
-	{
-		$this->routeNames = collect(\Route::getRoutes())
-			->map(function (Route $route) {
-				return $route->getName();
-			})->filter();
+    public function __construct()
+    {
+        $this->routeNames = collect(\Route::getRoutes())
+            ->map(function (Route $route) {
+                return $route->getName();
+            })->filter();
 
-		parent::__construct();
-	}
+        parent::__construct();
+    }
 
-	protected function getFunctionName()
-	{
-		return 'route';
-	}
+    protected function getFunctionName()
+    {
+        return 'route';
+    }
 
-	protected function check(string $routeName): bool
-	{
-		return $this->routeNames->contains($routeName);
-	}
+    protected function check(string $routeName): bool
+    {
+        return $this->routeNames->contains($routeName);
+    }
 }
