@@ -19,7 +19,7 @@ Example output:
 ## Installation
 
 ```
-composer require --dev juddling/laravel-route-checker
+composer require --dev juddling/laravel-runtime-errors
 ```
 
 ### Laravel Version <= 5.4
@@ -33,5 +33,5 @@ Add the service provider to `config/app.php`:
 ## Contributing
 Install from source:
 ```
-composer update juddling/laravel-route-checker --prefer-source
+composer update juddling/laravel-runtime-errors --prefer-source
 ```
