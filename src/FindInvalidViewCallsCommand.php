@@ -2,12 +2,9 @@
 
 namespace Juddling\RouteChecker;
 
-use Illuminate\Console\Command;
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
-use RegexIterator;
+use Juddling\RouteChecker\Commands\BaseCommand;
 
-class FindInvalidViewCallsCommand extends Command
+class FindInvalidViewCallsCommand extends BaseCommand
 {
     protected $signature = 'runtime-errors:view-calls';
     protected $description = 'Checks your view calls to see if they map to a file that exists.';
@@ -18,20 +15,6 @@ class FindInvalidViewCallsCommand extends Command
         $this->views = $views;
 
         parent::__construct();
-    }
-
-    private function getAllFilesInDir($directory, $fileExtension)
-    {
-        $directory = realpath($directory);
-        $it = new RecursiveDirectoryIterator($directory);
-        $it = new RecursiveIteratorIterator($it, RecursiveIteratorIterator::LEAVES_ONLY);
-        $it = new RegexIterator($it, '(\.' . preg_quote($fileExtension) . '$)');
-
-        foreach ($it as $file) {
-            /** @var \SplFileObject $file */
-            $filepath = $file->getRealPath();
-            yield $filepath;
-        }
     }
 
     public function handle()
