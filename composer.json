@@ -1,6 +1,6 @@
 {
-    "name": "juddling/laravel-route-checker",
-    "description": "Checks your route calls to see if they map to a registered named route",
+    "name": "juddling/laravel-runtime-errors",
+    "description": "Catch errors before runtime in your Laravel project",
     "type": "library",
     "authors": [
         {
