@@ -7,15 +7,15 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use RegexIterator;
 
-class FindInvalidRouteCallsCommand extends Command
+class FindInvalidViewCallsCommand extends Command
 {
-    protected $signature = 'runtime-errors:route-calls';
-    protected $description = 'Checks your route calls to see if they map to a registered named route';
+    protected $signature = 'runtime-errors:view-calls';
+    protected $description = 'Checks your view calls to see if they map to a file that exists.';
     protected $routeCalls;
 
-    public function __construct(FindInvalidRouteCalls $routeCalls)
+    public function __construct(FindInvalidViewCalls $views)
     {
-        $this->routeCalls = $routeCalls;
+        $this->views = $views;
 
         parent::__construct();
     }
@@ -38,11 +38,11 @@ class FindInvalidRouteCallsCommand extends Command
     {
         foreach ($this->getAllFilesInDir(getcwd(), 'php') as $file) {
             if (!$this->blacklisted($file)) {
-                $this->routeCalls->findFunctionCalls($file);
+                $this->views->findFunctionCalls($file);
             }
         }
 
-        $this->routeCalls->renderTable($this->getOutput());
+        $this->views->renderTable($this->getOutput());
     }
 
     protected function blacklisted($file)
