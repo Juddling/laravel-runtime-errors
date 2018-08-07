@@ -6,6 +6,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Routing\Route;
 use PhpParser\Node;
 use PhpParser\NodeTraverser;
+use PhpParser\NodeVisitor\FindingVisitor;
 use PhpParser\ParserFactory;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -24,9 +25,10 @@ abstract class FindInvalid
     }
 
     abstract protected function check(string $argument);
+
     abstract protected function getFunctionName();
 
-	public function findFunctionCalls($file)
+    public function findFunctionCalls($file)
     {
         $code = file_get_contents($file);
 
@@ -59,7 +61,7 @@ abstract class FindInvalid
         return $visitor->getFoundNodes();
     }
 
-	public function renderTable(OutputInterface $output)
+    public function renderTable(OutputInterface $output)
     {
         $table = new \Symfony\Component\Console\Helper\Table($output);
         $table->setHeaders([$this->nameOfArgument, 'Valid', 'File']);
