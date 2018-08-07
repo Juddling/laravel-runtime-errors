@@ -1,7 +1,17 @@
-## Laravel Route Checker
+## Laravel Runtime Errors
 
-This package parses your Laravel project, finds calls to the `route()` function, and check that the string 
-corresponds to a registered route.
+This package parses your Laravel project, and finds errors before they occur in production.
+
+The following artisan commands are added:
+
+```
+ runtime-errors
+  runtime-errors:route-calls                    Checks your route calls to see if they map to a registered named route
+  runtime-errors:route-definitions              Checks your route definitions to see if they point to an existing controller action
+  runtime-errors:view-calls                     Checks your view calls to see if they map to a file that exists.
+```
+
+Example output:
  
 ![Example output](resources/example-output.png)
 
@@ -11,15 +21,12 @@ corresponds to a registered route.
 composer require --dev juddling/laravel-route-checker
 ```
 
+### Laravel Version <= 5.4
+
 Add the service provider to `config/app.php`:
 
 ```
 \Juddling\RouteChecker\RouteCheckerServiceProvider::class,
-```
-
-##  Usage
-```
-php artisan juddling:find-invalid-routes
 ```
 
 ## Contributing
