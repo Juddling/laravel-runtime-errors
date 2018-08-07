@@ -7,7 +7,7 @@ use RegexIterator;
 
 class FindInvalidRouteDefinitionsCommand extends FindInvalidRouteCallsCommand
 {
-    protected $signature = 'juddling:route-definitions';
+    protected $signature = 'runtime-errors:route-definitions';
     protected $description = 'Checks your route definitions to see if they point to an existing controller action';
     protected $routeDefinitions;
 

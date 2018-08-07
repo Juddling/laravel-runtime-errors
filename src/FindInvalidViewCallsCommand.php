@@ -9,7 +9,7 @@ use RegexIterator;
 
 class FindInvalidViewCallsCommand extends Command
 {
-    protected $signature = 'juddling:find-invalid-views';
+    protected $signature = 'runtime-errors:view-calls';
     protected $description = 'Checks your view calls to see if they map to a file that exists.';
     protected $routeCalls;
 

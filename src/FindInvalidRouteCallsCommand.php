@@ -9,7 +9,7 @@ use RegexIterator;
 
 class FindInvalidRouteCallsCommand extends Command
 {
-    protected $signature = 'juddling:find-invalid-routes';
+    protected $signature = 'runtime-errors:route-calls';
     protected $description = 'Checks your route calls to see if they map to a registered named route';
     protected $routeCalls;
 
