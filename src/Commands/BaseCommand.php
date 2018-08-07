@@ -22,4 +22,16 @@ class BaseCommand extends Command
             yield $filepath;
         }
     }
+
+    /**
+     * Given a file path, returns if this file should be parsed.
+     *
+     * @param $file
+     * @return bool
+     */
+    protected function blacklisted($file): bool
+    {
+        return strpos($file, 'vendor/')
+            || strpos($file, 'storage/framework/views/');
+    }
 }

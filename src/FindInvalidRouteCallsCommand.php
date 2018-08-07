@@ -27,10 +27,4 @@ class FindInvalidRouteCallsCommand extends BaseCommand
 
         $this->routeCalls->renderTable($this->getOutput());
     }
-
-    protected function blacklisted($file)
-    {
-        return strpos($file, 'vendor/')
-            || strpos($file, 'storage/framework/views/');
-    }
 }

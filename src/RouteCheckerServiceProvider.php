@@ -12,6 +12,7 @@ class RouteCheckerServiceProvider extends ServiceProvider
             FindInvalidRouteCallsCommand::class,
             FindInvalidViewCallsCommand::class,
             FindInvalidRouteDefinitionsCommand::class,
+            Commands\DieDumpCallsCommand::class,
         ]);
     }
 }
