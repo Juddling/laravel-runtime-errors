@@ -9,9 +9,9 @@ class RouteCheckerServiceProvider extends ServiceProvider
     public function register()
     {
         $this->commands([
-            FindInvalidRouteCallsCommand::class,
-            FindInvalidViewCallsCommand::class,
-            FindInvalidRouteDefinitionsCommand::class,
+            Commands\FindInvalidRouteCallsCommand::class,
+            Commands\FindInvalidViewCallsCommand::class,
+            Commands\FindInvalidRouteDefinitionsCommand::class,
             Commands\DieDumpCallsCommand::class,
         ]);
     }

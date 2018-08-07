@@ -1,8 +1,8 @@
 <?php
 
-namespace Juddling\RouteChecker;
+namespace Juddling\RouteChecker\Commands;
 
-use Juddling\RouteChecker\Commands\BaseCommand;
+use Juddling\RouteChecker\FindInvalidRouteCalls;
 
 class FindInvalidRouteCallsCommand extends BaseCommand
 {

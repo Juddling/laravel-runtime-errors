@@ -1,8 +1,10 @@
 <?php
 
-namespace Juddling\RouteChecker;
+namespace Juddling\RouteChecker\Commands;
 
 use DirectoryIterator;
+use Juddling\RouteChecker\FindInvalidRouteCalls;
+use Juddling\RouteChecker\FindInvalidRouteDefinitions;
 use RegexIterator;
 
 class FindInvalidRouteDefinitionsCommand extends FindInvalidRouteCallsCommand

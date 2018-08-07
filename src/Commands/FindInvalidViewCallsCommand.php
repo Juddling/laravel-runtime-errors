@@ -1,13 +1,13 @@
 <?php
 
-namespace Juddling\RouteChecker;
+namespace Juddling\RouteChecker\Commands;
 
-use Juddling\RouteChecker\Commands\BaseCommand;
+use Juddling\RouteChecker\FindInvalidViewCalls;
 
 class FindInvalidViewCallsCommand extends BaseCommand
 {
     protected $signature = 'runtime-errors:view-calls';
-    protected $description = 'Checks your view calls to see if they map to a file that exists.';
+    protected $description = 'Checks your view calls to see if they map to a file that exists';
     protected $routeCalls;
 
     public function __construct(FindInvalidViewCalls $views)
