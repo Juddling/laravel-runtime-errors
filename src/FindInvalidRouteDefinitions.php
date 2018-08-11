@@ -4,6 +4,7 @@ namespace Juddling\RouteChecker;
 
 use PhpParser\Node;
 use PhpParser\NodeTraverser;
+use PhpParser\NodeVisitor\FindingVisitor;
 
 class FindInvalidRouteDefinitions extends FindInvalid
 {
