@@ -15,7 +15,7 @@ abstract class FindInvalid
     protected $parser;
     /** @var Collection */
     protected $routeCalls;
-
+    protected $results;
     protected $nameOfArgument = 'Parameter';
 
     public function __construct()

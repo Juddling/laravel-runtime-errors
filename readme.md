@@ -1,4 +1,5 @@
 ## Laravel Runtime Errors
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Juddling/laravel-runtime-errors/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Juddling/laravel-runtime-errors/?branch=master)
 
 This package parses your Laravel project, and finds errors before they occur in production.
 
